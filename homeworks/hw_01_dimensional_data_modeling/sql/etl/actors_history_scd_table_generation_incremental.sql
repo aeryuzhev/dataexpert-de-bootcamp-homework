@@ -2,7 +2,6 @@ INSERT INTO actors_history_scd
     WITH
     variables AS (
         SELECT
-            1979 AS last_year,
             1980 AS current_year
     ),
     -- ------------------------------
@@ -17,8 +16,8 @@ INSERT INTO actors_history_scd
         FROM 
             actors_history_scd
         WHERE
-            current_year = (SELECT last_year FROM variables)
-            AND end_year = (SELECT last_year FROM variables)
+            current_year = (SELECT current_year - 1 FROM variables)
+            AND end_year = (SELECT current_year - 1 FROM variables)
     ),
     -- ------------------------------
     historical_scd_records AS (
@@ -32,8 +31,8 @@ INSERT INTO actors_history_scd
         FROM
             actors_history_scd
         WHERE
-            current_year = (SELECT last_year FROM variables)
-            AND end_year < (SELECT last_year FROM variables)
+            current_year = (SELECT current_year - 1 FROM variables)
+            AND end_year < (SELECT current_year - 1 FROM variables)
     ),
     -- ------------------------------
     current_year_records AS (

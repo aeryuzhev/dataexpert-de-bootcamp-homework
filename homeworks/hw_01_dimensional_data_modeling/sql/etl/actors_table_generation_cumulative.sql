@@ -1,6 +1,6 @@
 DO $$
 BEGIN
-    FOR movie_year IN 1970..2021 LOOP
+    FOR movie_year IN 1980..1989 LOOP
         INSERT INTO actors
             WITH
             last_year AS (

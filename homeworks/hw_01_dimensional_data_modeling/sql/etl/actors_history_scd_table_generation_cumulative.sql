@@ -1,6 +1,6 @@
 DO $$
 BEGIN
-    FOR movie_year IN 2021..2021 LOOP
+    FOR movie_year IN 1970..2021 LOOP
         INSERT INTO actors_history_scd
             WITH
             last_year_scd_records AS (
@@ -131,6 +131,7 @@ BEGIN
                 UNION ALL
                 SELECT * FROM unnested_changed_records
             ) q
+        -- ------------------------------
         ON CONFLICT (actor_id, start_year, current_year)
         DO UPDATE SET
             actor = EXCLUDED.actor,

@@ -2,7 +2,6 @@ INSERT INTO actors
     WITH
     variables AS (
         SELECT
-            1969 AS last_year,
             1970 AS current_year
     ),
     -- ------------------------------
@@ -17,7 +16,7 @@ INSERT INTO actors
         FROM
             actors
         WHERE
-            current_year = (SELECT last_year FROM variables)
+            current_year = (SELECT current_year - 1 FROM variables)
     ),
     -- ------------------------------
     current_year AS (
