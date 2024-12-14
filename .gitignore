@@ -1,3 +1,4 @@
 .vscode
 *.zip
-*sandbox.sql
+*sandbox.*
+data
