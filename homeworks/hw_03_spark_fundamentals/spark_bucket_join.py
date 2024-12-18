@@ -11,8 +11,8 @@ MAPS_PATH = '/home/iceberg/data/maps.csv'
 MEDALS_PATH = '/home/iceberg/data/medals.csv'
 
 # Add properties
-#     'spark.driver.memory      8g' 
-#     'spark.executor.memory    8g' 
+#     'spark.driver.memory      8g'
+#     'spark.executor.memory    8g'
 # to the /opt/spark/conf/spark-defaults.conf
 spark = (
     SparkSession.builder
@@ -57,36 +57,36 @@ spark.sql('DROP TABLE IF EXISTS bootcamp.medals_matches_players_bucketed')
 
 
 spark.sql(f"""
-CREATE TABLE IF NOT EXISTS bootcamp.match_details_bucketed (
-    match_id            STRING,
-    player_gamertag     STRING,
-    player_total_kills  INTEGER
-)
-CLUSTERED BY ({BUCKET_BY_FIELD}) INTO {NUMBER_OF_BUCKETS} BUCKETS
-STORED AS PARQUET
+    CREATE TABLE IF NOT EXISTS bootcamp.match_details_bucketed (
+        match_id            STRING,
+        player_gamertag     STRING,
+        player_total_kills  INTEGER
+    )
+    CLUSTERED BY ({BUCKET_BY_FIELD}) INTO {NUMBER_OF_BUCKETS} BUCKETS
+    STORED AS PARQUET
 """)
 
 spark.sql(f"""
-CREATE TABLE IF NOT EXISTS bootcamp.matches_bucketed (
-    match_id         STRING,
-    mapid            STRING,
-    playlist_id      STRING,
-    completion_date  TIMESTAMP
-)
-PARTITIONED BY (completion_date)
-CLUSTERED BY ({BUCKET_BY_FIELD}) INTO {NUMBER_OF_BUCKETS} BUCKETS
-STORED AS PARQUET
+    CREATE TABLE IF NOT EXISTS bootcamp.matches_bucketed (
+        match_id         STRING,
+        mapid            STRING,
+        playlist_id      STRING,
+        completion_date  TIMESTAMP
+    )
+    PARTITIONED BY (completion_date)
+    CLUSTERED BY ({BUCKET_BY_FIELD}) INTO {NUMBER_OF_BUCKETS} BUCKETS
+    STORED AS PARQUET
 """)
 
 spark.sql(f"""
-CREATE TABLE IF NOT EXISTS bootcamp.medals_matches_players_bucketed (
-    match_id         STRING,
-    player_gamertag  STRING,
-    medal_id         LONG,
-    count            INTEGER
-)
-CLUSTERED BY ({BUCKET_BY_FIELD}) INTO {NUMBER_OF_BUCKETS} BUCKETS
-STORED AS PARQUET
+    CREATE TABLE IF NOT EXISTS bootcamp.medals_matches_players_bucketed (
+        match_id         STRING,
+        player_gamertag  STRING,
+        medal_id         LONG,
+        count            INTEGER
+    )
+    CLUSTERED BY ({BUCKET_BY_FIELD}) INTO {NUMBER_OF_BUCKETS} BUCKETS
+    STORED AS PARQUET
 """)
 
 (
@@ -207,19 +207,19 @@ matches_unsorted_df.write.mode('overwrite').saveAsTable('bootcamp.matches_unsort
 matches_sorted_df.write.mode('overwrite').saveAsTable('bootcamp.matches_sorted')
 
 spark.sql("""
-SELECT
-    SUM(file_size_in_bytes) AS size,
-    COUNT(1) AS num_files,
-    'sorted'
-FROM
-    bootcamp.matches_sorted.files
-UNION ALL
-SELECT
-    SUM(file_size_in_bytes) AS size,
-    COUNT(1) AS num_files,
-    'unsorted'
-FROM
-    bootcamp.matches_unsorted.files
+    SELECT
+        SUM(file_size_in_bytes) AS size,
+        COUNT(1) AS num_files,
+        'sorted'
+    FROM
+        bootcamp.matches_sorted.files
+    UNION ALL
+    SELECT
+        SUM(file_size_in_bytes) AS size,
+        COUNT(1) AS num_files,
+        'unsorted'
+    FROM
+        bootcamp.matches_unsorted.files
 """).show()
 
 spark.stop()

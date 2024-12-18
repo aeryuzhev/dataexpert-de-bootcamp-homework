@@ -10,6 +10,7 @@ INSERT INTO actors_history_scd
         LIMIT
             1
     ),
+    -- ------------------------------
     previous_changes AS (
         SELECT
             actor_id,
@@ -24,6 +25,7 @@ INSERT INTO actors_history_scd
         FROM
             actors
     ),
+    -- ------------------------------
     streak_identified AS (
         SELECT
             actor_id,
@@ -35,6 +37,7 @@ INSERT INTO actors_history_scd
         FROM
             previous_changes
     ),
+    -- ------------------------------
     streak_aggregated AS (
         SELECT
             actor_id,
