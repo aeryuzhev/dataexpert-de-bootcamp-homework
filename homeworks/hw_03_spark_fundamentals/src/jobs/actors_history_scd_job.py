@@ -9,11 +9,11 @@ def main():
         .getOrCreate()
     )
 
-    transformed_df = transform_hosts(spark, spark.table('actors'))
+    transformed_df = transform_actors(spark, spark.table('actors'))
     transformed_df.write.mode('overwrite').insertInto('actors_history_scd')
 
 
-def transform_hosts(spark, df):
+def transform_actors(spark, df):
     df.createOrReplaceTempView('actors')
     query = ("""
         WITH

@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from chispa.dataframe_comparer import assert_df_equality
 
-from ..jobs.actors_history_scd_job import transform_hosts
+from ..jobs.actors_history_scd_job import transform_actors
 
 Actors = namedtuple(
     'Actors',
@@ -58,7 +58,7 @@ def test_actors_history_scd_generation(spark):
     ]
     source_df = spark.createDataFrame(source_data)
 
-    actual_df = transform_hosts(spark, source_df)
+    actual_df = transform_actors(spark, source_df)
 
     expected_data = [
         ActorsHistoryScd('nm0000002', 'Lauren Bacall', 'bad', 'true', 1982, 1980, 1981),
